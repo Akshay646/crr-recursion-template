@@ -1,209 +1,204 @@
-Recursion: 
+# 🧠 CRR Template for Recursion Problems
 
-✅ Fix: Use the “Choice-Result-Return” Template 
+This document breaks down recursion into a simple, repeatable 3-step mindset: **CRR – Choice, Result, Return**. If you're struggling with recursion or Dynamic Programming, this structure will help you think clearly.
 
-This 3-step mindset works in all recursive problems, especially max/min/ways. 
+---
 
-🔁 Step-by-step Recursion Mindset (CRR): 
+## ✅ Fix: Use the “Choice-Result-Return” Template
 
-Choice: At this step, what options do I have? 
+This 3-step mindset works in all recursive problems, especially:
 
-Result: What will I get by picking each option? 
+* Finding max/min values
+* Counting total ways
+* Exploring all paths
 
-Return: From those results, what do I return (min/max/sum/etc.)? 
+---
 
-🧠 Let's Take a Real Example: House Robber 
+## 🔁 Step-by-step Recursion Mindset (CRR)
 
-Problem: Given nums = [2,7,9,3,1], return the maximum amount you can rob without robbing two adjacent houses. 
+**1. Choice**
 
-1. Choices: 
+> At this step, what options do I have?
 
-At index i, I can either: 
+**2. Result**
 
-Rob house i → skip i+1, go to i+2 
+> What will I get by picking each option?
 
-Don’t rob house i → go to i+1 
+**3. Return**
 
-2. Result: 
+> From those results, what do I return (min/max/sum/etc.)?
 
-If I rob → I get nums[i] + solve(i + 2) 
- If I skip → I get solve(i + 1) 
+---
 
-3. Return: 
+## 🧠 Let's Take a Real Example: House Robber
 
-return max(rob, skip); 
- 
+### Problem:
 
-So Final Recursion: 
+Given `nums = [2,7,9,3,1]`, return the maximum amount you can rob without robbing two adjacent houses.
 
-int solve(int i) { 
-    if (i >= nums.size()) return 0; 
- 
-    int rob = nums[i] + solve(i + 2); 
-    int skip = solve(i + 1); 
- 
-    return max(rob, skip); 
-} 
- 
+### CRR Breakdown:
 
-Just plug in the CRR mindset. 
+**1. Choices:**
 
- 
+* Rob house `i` → skip `i+1`, go to `i+2`
+* Don’t rob house `i` → go to `i+1`
 
-👊 Now Apply CRR to Any Problem: 
+**2. Result:**
 
-Climbing stairs → Choice: 1 step or 2 steps 
+```cpp
+if I rob → nums[i] + solve(i + 2)
+if I skip → solve(i + 1)
+```
 
-Coin change → Choice: pick coin or skip 
+**3. Return:**
 
-Min path sum → Choice: go down or right 
+```cpp
+return max(rob, skip);
+```
 
-Max profit → Choice: buy/sell/skip 
+### Final Recursive Code:
 
-Same structure every time. 
+```cpp
+int solve(int i) {
+    if (i >= nums.size()) return 0;
 
+    int rob = nums[i] + solve(i + 2);
+    int skip = solve(i + 1);
 
- 
+    return max(rob, skip);
+}
+```
 
-🧩 Problem 
+Just plug in the CRR mindset. It works.
 
-Given a grid[m][n] where you can only move right or down, find the minimum path sum from the top-left (0,0) to bottom-right (m-1,n-1). 
+---
 
- 
+## 👊 Apply CRR to Any Problem:
 
-✅ CRR Breakdown 
+* **Climbing stairs** → Choices: 1 step or 2 steps
+* **Coin change** → Choices: pick coin or skip
+* **Min path sum** → Choices: go down or right
+* **Max profit** → Choices: buy/sell/skip
 
-✅ C → Choices 
+Same recursive structure every time.
 
-From cell (i, j), you have two valid moves: 
+---
 
-Move Down to (i + 1, j) 
+## 🧩 Problem: Minimum Path Sum
 
-Move Right to (i, j + 1) 
+**Problem:**
+Given a grid `grid[m][n]` where you can only move right or down, find the minimum path sum from the top-left `(0,0)` to bottom-right `(m-1,n-1)`.
 
- 
+---
 
-✅ R → Result of those choices 
+## ✅ CRR Breakdown
 
-You want the minimum path sum among these two paths. So: 
+### ✅ C → Choices
 
-int down = solve(i + 1, j); 
-int right = solve(i, j + 1); 
- 
+From cell `(i, j)`, two valid moves:
 
-✅ R → Return 
+* Move Down → `(i + 1, j)`
+* Move Right → `(i, j + 1)`
 
-You return the value of the current cell grid[i][j] plus the minimum of the two choices: 
+### ✅ R → Result
 
-return grid[i][j] + min(down, right); 
- 
+```cpp
+int down = solve(i + 1, j);
+int right = solve(i, j + 1);
+```
 
- 
+### ✅ R → Return
 
-✅ Base Cases (very important for recursion) 
+```cpp
+return grid[i][j] + min(down, right);
+```
 
-Reached destination: 
+### ✅ Base Cases
 
-if (i == m - 1 && j == n - 1) return grid[i][j]; 
- 
+```cpp
+// Reached destination:
+if (i == m - 1 && j == n - 1) return grid[i][j];
 
-Out of bounds: 
+// Out of bounds:
+if (i >= m || j >= n) return INT_MAX;
+```
 
-if (i >= m || j >= n) return INT_MAX; 
- 
- 
+### Full Recursive Code:
 
-🔁 Full CRR Template Recap 
+```cpp
+int solve(int i, int j) {
+    if (i >= m || j >= n) return INT_MAX;
+    if (i == m - 1 && j == n - 1) return grid[i][j];
 
-int solve(int i, int j) { 
-    if (i >= m || j >= n) return INT_MAX; 
-    if (i == m - 1 && j == n - 1) return grid[i][j]; 
- 
-    int down = solve(i + 1, j); 
-    int right = solve(i, j + 1); 
- 
-    return grid[i][j] + min(down, right); 
-} 
+    int down = solve(i + 1, j);
+    int right = solve(i, j + 1);
 
- 
+    return grid[i][j] + min(down, right);
+}
+```
 
-🧠 Problem Recap: 
+---
 
-You are given an m x n grid filled with non-negative numbers. Starting at the top-left, you can only move right or down. Your goal is to minimize the sum of all numbers along the path to the bottom-right. 
+## ✅ CRMA Breakdown for Optimized Recursion (Memoized)
 
-✅ CRMA Breakdown for Minimum Path Sum 
+### ✅ C – Choices
 
-✅ C – Choices 
+From `(i, j)`:
 
-From cell (i, j), you have two choices: 
+* Move Down → `(i+1, j)`
+* Move Right → `(i, j+1)`
 
-Move Down → (i+1, j) 
+### ✅ R – Result
 
-Move Right → (i, j+1) 
+```cpp
+down = solve(i + 1, j)
+right = solve(i, j + 1)
+return grid[i][j] + min(down, right);
+```
 
- 
+### ✅ M – Memoization
 
-✅ R – Result of a choice 
+Use 2D dp table:
 
-Each choice gives you a subproblem: 
+```cpp
+if (dp[i][j] != -1) return dp[i][j];
+vector<vector<int>> dp(m, vector<int>(n, -1));
+```
 
-down = solve(i + 1, j) → min path sum from the cell below 
+### ✅ A – Answer
 
-right = solve(i, j + 1) → min path sum from the cell to the right 
+Call from starting point:
 
-Then combine it with the current cell value: 
+```cpp
+solve(0, 0)
+```
 
-return grid[i][j] + min(down, right); 
- 
+---
 
- 
+### Final Recursive Code with CRMA:
 
-✅ M – Memoization 
+```cpp
+int solve(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp) {
+    int m = grid.size(), n = grid[0].size();
 
-Since (i, j) states repeat, memoize with a 2D dp table: 
+    if (i >= m || j >= n) return INT_MAX;
+    if (i == m - 1 && j == n - 1) return grid[i][j];
 
-if (dp[i][j] != -1) return dp[i][j]; 
- 
+    if (dp[i][j] != -1) return dp[i][j];
 
-Use: 
+    int down = solve(i + 1, j, grid, dp);
+    int right = solve(i, j + 1, grid, dp);
 
-vector<vector<int>> dp(m, vector<int>(n, -1)); 
- 
+    return dp[i][j] = grid[i][j] + min(down, right);
+}
+```
 
-✅ A – Answer 
+---
 
-Call the function from the starting cell: 
+### 🟢 Intuition Behind INT\_MAX
 
-solve(0, 0) 
- 
+We return `INT_MAX` for out-of-bound cells because:
 
-Final Recursive Code with CRMA 
-
-int solve(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp) { 
-    int m = grid.size(), n = grid[0].size(); 
-     
-    if (i >= m || j >= n) return INT_MAX; // out of bounds 
-    if (i == m - 1 && j == n - 1) return grid[i][j]; // reached destination 
-     
-    if (dp[i][j] != -1) return dp[i][j]; 
-     
-    int down = solve(i + 1, j, grid, dp); 
-    int right = solve(i, j + 1, grid, dp); 
-     
-    return dp[i][j] = grid[i][j] + min(down, right); 
-} 
- 
-
- 
-
-🟢 Intuition behind INT_MAX 
-
-We return INT_MAX for out-of-bound cells because: 
-
-We're using min(down, right) 
-
-If you fall outside the grid, that path shouldn't be considered 
-
-INT_MAX ensures it never gets picked 
-
- 
+* We're using `min(down, right)`
+* If we go out of bounds, that path shouldn't be considered
+* `INT_MAX` ensures it never gets picked in the minimum
